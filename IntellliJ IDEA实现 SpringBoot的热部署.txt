@@ -1,0 +1,8 @@
+1. 添加功能坐标:
+ <dependency>
+ <groupId>org.springframework.boot</groupId>
+ <artifactId>spring-boot-devtools</artifactId>
+ </dependency>
+2. idea的配置
+ file ---> setting,搜索compiler,选中Compiler,右侧会出现内容,这个时候选中Build project automatically.点击apply,点击ok
+3. 快捷键ctrl+alt+shift+/,选中Registry,在compiler.automake.allow.when.app.running后面打上对勾,之后关闭就好.
