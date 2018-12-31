@@ -62,4 +62,13 @@ public class FileUploadController {
         return list;
     }
 
+    @PostMapping("/upload3")
+    @ResponseBody
+    public void upload3(String based64) throws IOException {
+        final File tempFile = new File("D:\\file\\test.jpg");
+        String[] split = based64.split("based64,");
+        final byte[] bytes = Base64Utils.decodeFromString(split.length > 1 ? split[1] : split[0]);
+        FileCopyUtils.copy(bytes,tempFile);
+    }
+
  }
