@@ -79,4 +79,46 @@ public class ElasticSearchTest {
         // 关闭连接
         client.close();
     }
+
+    @Test
+    // 各种查询使用
+    public void demo3() throws IOException {
+        // 创建连接搜索服务器对象
+        Client client = TransportClient
+                .builder()
+                .build()
+                .addTransportAddress(
+                        new InetSocketTransportAddress(InetAddress
+                                .getByName("127.0.0.1"), 9300));
+        // 搜索数据
+        // get() === execute().actionGet()
+         SearchResponse searchResponse = client.prepareSearch("blog1")
+         .setTypes("article")
+         .setQuery(QueryBuilders.queryStringQuery("全面")).get();
+
+        // SearchResponse searchResponse = client.prepareSearch("blog1")
+        // .setTypes("article")
+        // .setQuery(QueryBuilders.wildcardQuery("content", "*全文*")).get();
+
+//        SearchResponse searchResponse = client.prepareSearch("blog2")
+//                .setTypes("article")
+//                .setQuery(QueryBuilders.termQuery("content", "搜索")).get();
+        printSearchResponse(searchResponse);
+
+        // 关闭连接
+        client.close();
+    }
+
+    private void printSearchResponse(SearchResponse searchResponse) {
+        SearchHits hits = searchResponse.getHits(); // 获取命中次数，查询结果有多少对象
+        System.out.println("查询结果有：" + hits.getTotalHits() + "条");
+        Iterator<SearchHit> iterator = hits.iterator();
+        while (iterator.hasNext()) {
+            SearchHit searchHit = iterator.next(); // 每个查询对象
+            System.out.println(searchHit.getSourceAsString()); // 获取字符串格式打印
+            System.out.println("title:" + searchHit.getSource().get("title"));
+        }
+    }
+
+
 }
