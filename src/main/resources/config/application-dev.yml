@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 app:
   dev-model: false
   uac:
@@ -19,8 +20,10 @@ app:
 
 logging:
   level:warn
+  ##es地址
 
 spring:
+
   #DATABASE CONFIG
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -43,7 +46,9 @@ spring:
       max-idle: 8
       min-idle: 0
       timeout: 0
-
+#  data:
+#    elasticsearch:
+#      cluster-nodes: 127.0.0.1:9300
 #自己的redis服务
 #  redis:
 #   host: 192.168.233.131
