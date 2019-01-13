@@ -1,5 +1,6 @@
 package com.test;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
@@ -7,10 +8,14 @@ import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Iterator;
 
 /**
  * @auther xuxq
@@ -41,6 +46,35 @@ public class ElasticSearchTest {
                 .endObject();
         // 建立文档对象
         client.prepareIndex("blog1", "article", "1").setSource(builder).get();
+
+        // 关闭连接
+        client.close();
+    }
+    @Test
+    // 搜索在elasticSearch中创建文档对象
+    public void demo2() throws IOException {
+        // 创建连接搜索服务器对象
+        Client client = TransportClient
+                .builder()
+                .build()
+                .addTransportAddress(
+                        new InetSocketTransportAddress(InetAddress
+                                .getByName("127.0.0.1"), 9300));
+        // 搜索数据
+        // get() === execute().actionGet()
+        SearchResponse searchResponse = client.prepareSearch("blog1")
+                .setTypes("article").setQuery(QueryBuilders.matchAllQuery())
+                .get();
+        SearchHits hits = searchResponse.getHits();
+        System.out.println("查询结果：" + hits.getTotalHits() + "条");
+        Iterator<SearchHit> iterator = hits.iterator();
+        while (iterator.hasNext()){
+            SearchHit next = iterator.next();
+            System.out.println(next.getSourceAsString());//取字符串格式打印
+            System.out.println("title:" +next.getSource().get("title"));
+        }
+
+        ///printSearchResponse(searchResponse);
 
         // 关闭连接
         client.close();
