@@ -104,7 +104,7 @@ public class ElasticSearchTest {
 //                .setTypes("article")
 //                .setQuery(QueryBuilders.termQuery("content", "搜索")).get();
         printSearchResponse(searchResponse);
-
+    
         // 关闭连接
         client.close();
     }
@@ -119,6 +119,8 @@ public class ElasticSearchTest {
             System.out.println("title:" + searchHit.getSource().get("title"));
         }
     }
+
+
 
 
 }

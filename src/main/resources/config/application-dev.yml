@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8881
 
 app:
   dev-model: false
@@ -20,9 +20,14 @@ app:
 
 logging:
   level:warn
-  ##es地址
 
 spring:
+  #springboot集成elasticsearch简单应用
+  elasticsearch:
+  jest:
+  uris:
+  - http://localhost:9200 # ES服务器的地址！
+  read-timeout: 5000
 
   #DATABASE CONFIG
   datasource:
